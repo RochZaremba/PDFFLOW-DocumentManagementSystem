@@ -1,0 +1,128 @@
+<div class="pdf-list-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>
+      <mat-icon class="header-icon">picture_as_pdf</mat-icon>
+      Przeglądaj dokumenty PDF
+    </h1>
+    <p class="subtitle">Wyszukuj i pobieraj zatwierdzone dokumenty</p>
+  </div>
+
+  <!-- Filtry -->
+  <mat-card class="filters-card">
+    <form [formGroup]="filterForm">
+      <div class="filters-row">
+        <!-- Wyszukiwanie -->
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Szukaj po tytule</mat-label>
+          <input
+            matInput
+            formControlName="search"
+            placeholder="Wprowadź tytuł dokumentu..."
+          />
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Filtrowanie po tagach -->
+        <mat-form-field appearance="outline" class="tags-field">
+          <mat-label>Filtruj po tagach</mat-label>
+          <mat-select formControlName="selectedTags" multiple>
+            <mat-option *ngFor="let tag of allTags" [value]="tag.name">
+              {{ tag.name }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix>label</mat-icon>
+        </mat-form-field>
+
+        <!-- Przycisk resetuj -->
+        <button
+          mat-raised-button
+          color="accent"
+          type="button"
+          (click)="resetFilters()"
+          class="reset-button"
+        >
+          <mat-icon>clear</mat-icon>
+          Wyczyść
+        </button>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Ładowanie dokumentów...</p>
+  </div>
+
+  <!-- Lista PDF-ów -->
+  <div *ngIf="!isLoading && pdfs.length > 0" class="pdf-grid">
+    <mat-card *ngFor="let pdf of pdfs" class="pdf-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="pdf-icon">picture_as_pdf</mat-icon>
+        <mat-card-title>{{ pdf.title }}</mat-card-title>
+        <mat-card-subtitle>
+          Dodano: {{ formatDate(pdf.createdAt) }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Tagi -->
+        <div class="tags-container" *ngIf="getPdfTags(pdf).length > 0">
+          <mat-chip-set>
+            <mat-chip *ngFor="let tag of getPdfTags(pdf)">
+              <mat-icon matChipAvatar>label</mat-icon>
+              {{ tag }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <div class="no-tags" *ngIf="getPdfTags(pdf).length === 0">
+          <mat-icon>label_off</mat-icon>
+          <span>Brak tagów</span>
+        </div>
+
+        <!-- Informacje -->
+        <div class="pdf-info">
+          <div class="info-row">
+            <mat-icon>person</mat-icon>
+            <span>{{ pdf.uploadedBy.email }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="downloadPdf(pdf)"
+        >
+          <mat-icon>download</mat-icon>
+          Pobierz PDF
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Brak wyników -->
+  <div *ngIf="!isLoading && pdfs.length === 0" class="empty-state">
+    <mat-icon class="empty-icon">inbox</mat-icon>
+    <h2>Brak dokumentów</h2>
+    <p>Nie znaleziono żadnych dokumentów spełniających kryteria wyszukiwania.</p>
+    <button mat-raised-button color="primary" (click)="resetFilters()">
+      Wyczyść filtry
+    </button>
+  </div>
+
+  <!-- Paginacja -->
+  <mat-paginator
+    *ngIf="!isLoading && pdfs.length > 0"
+    [length]="totalPdfs"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 20, 50]"
+    [pageIndex]="currentPage - 1"
+    (page)="onPageChange($event)"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+</div>
