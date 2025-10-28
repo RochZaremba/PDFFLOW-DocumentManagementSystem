@@ -1,0 +1,138 @@
+<div class="upload-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>
+      <mat-icon class="header-icon">cloud_upload</mat-icon>
+      Wgraj dokument PDF
+    </h1>
+    <p class="subtitle">Przesyłane pliki są sprawdzane przez administratora przed publikacją</p>
+  </div>
+
+  <!-- Formularz uploadu -->
+  <mat-card class="upload-card">
+    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+      <!-- Pole tytułu -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tytuł dokumentu</mat-label>
+        <input
+          matInput
+          formControlName="title"
+          placeholder="Wprowadź tytuł dokumentu..."
+          [disabled]="isUploading"
+        />
+        <mat-icon matPrefix>title</mat-icon>
+        <mat-error *ngIf="title?.hasError('required')">
+          Tytuł jest wymagany
+        </mat-error>
+        <mat-error *ngIf="title?.hasError('minlength')">
+          Tytuł musi mieć min. 3 znaki
+        </mat-error>
+        <mat-error *ngIf="title?.hasError('maxlength')">
+          Tytuł może mieć max. 200 znaków
+        </mat-error>
+      </mat-form-field>
+
+      <!-- File input (ukryty) -->
+      <input
+        type="file"
+        #fileInputRef
+        id="fileInput"
+        accept=".pdf"
+        (change)="onFileSelected($event)"
+        style="display: none"
+        [disabled]="isUploading"
+      />
+
+      <!-- Wybór pliku -->
+      <div class="file-upload-section">
+        <div class="file-drop-zone" [class.has-file]="selectedFile">
+          <mat-icon class="upload-icon">picture_as_pdf</mat-icon>
+
+          <div *ngIf="!selectedFile" class="no-file">
+            <h3>Wybierz plik PDF</h3>
+            <p>lub przeciągnij i upuść tutaj</p>
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="fileInputRef.click()"
+              [disabled]="isUploading"
+            >
+              <mat-icon>attach_file</mat-icon>
+              Wybierz plik
+            </button>
+            <p class="file-requirements">
+              Maksymalny rozmiar: 10MB | Format: PDF
+            </p>
+          </div>
+
+          <div *ngIf="selectedFile" class="file-selected">
+            <mat-icon class="file-icon">check_circle</mat-icon>
+            <div class="file-info">
+              <h3>{{ filePreview }}</h3>
+              <p>{{ formatFileSize(selectedFile.size) }}</p>
+            </div>
+            <button
+              mat-icon-button
+              color="warn"
+              type="button"
+              (click)="clearFile()"
+              [disabled]="isUploading"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <mat-progress-bar
+        *ngIf="isUploading"
+        mode="indeterminate"
+        color="primary"
+      ></mat-progress-bar>
+
+      <!-- Przycisk submit -->
+      <div class="actions">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="submit-button"
+          [disabled]="isUploading || !selectedFile"
+        >
+          <mat-icon>cloud_upload</mat-icon>
+          <span *ngIf="!isUploading">Prześlij dokument</span>
+          <span *ngIf="isUploading">Przesyłanie...</span>
+        </button>
+
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="uploadForm.reset(); clearFile()"
+          [disabled]="isUploading"
+        >
+          <mat-icon>clear</mat-icon>
+          Wyczyść formularz
+        </button>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Informacje -->
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar class="info-icon">info</mat-icon>
+      <mat-card-title>Instrukcje</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ul>
+        <li>Wybierz plik PDF o rozmiarze do 10MB</li>
+        <li>Nadaj dokumentowi opisowy tytuł (3-200 znaków)</li>
+        <li>Po przesłaniu plik zostanie sprawdzony przez administratora</li>
+        <li>Zatwierdzone dokumenty pojawią się na liście publicznej</li>
+        <li>O statusie dokumentu możesz sprawdzić w zakładce "Moje pliki"</li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+</div>
