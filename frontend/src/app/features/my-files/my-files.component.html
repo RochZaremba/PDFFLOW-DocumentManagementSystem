@@ -1,0 +1,144 @@
+<div class="my-files-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>
+      <mat-icon class="header-icon">folder_open</mat-icon>
+      Moje dokumenty
+    </h1>
+    <p class="subtitle">Zarządzaj dokumentami, które przesłałeś do systemu</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row" *ngIf="!isLoading">
+    <mat-card class="stat-card">
+      <mat-icon class="stat-icon total">description</mat-icon>
+      <div class="stat-content">
+        <h3>{{ pdfs.length }}</h3>
+        <p>Wszystkie</p>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-icon class="stat-icon pending">schedule</mat-icon>
+      <div class="stat-content">
+        <h3>{{ pdfs.filter(p => p.status === 'pending').length }}</h3>
+        <p>Oczekujące</p>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-icon class="stat-icon approved">check_circle</mat-icon>
+      <div class="stat-content">
+        <h3>{{ pdfs.filter(p => p.status === 'approved').length }}</h3>
+        <p>Zatwierdzone</p>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-icon class="stat-icon rejected">cancel</mat-icon>
+      <div class="stat-content">
+        <h3>{{ pdfs.filter(p => p.status === 'rejected').length }}</h3>
+        <p>Odrzucone</p>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Ładowanie dokumentów...</p>
+  </div>
+
+  <!-- Lista plików -->
+  <div *ngIf="!isLoading && pdfs.length > 0" class="files-grid">
+    <mat-card *ngFor="let pdf of pdfs" class="file-card">
+      <!-- Status badge -->
+      <div class="status-badge" [ngClass]="'status-' + pdf.status">
+        <mat-icon>{{ getStatusIcon(pdf.status) }}</mat-icon>
+        {{ getStatusLabel(pdf.status) }}
+      </div>
+
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="pdf-icon">picture_as_pdf</mat-icon>
+        <mat-card-title>{{ pdf.title }}</mat-card-title>
+        <mat-card-subtitle>
+          Dodano: {{ formatDate(pdf.createdAt) }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Tagi -->
+        <div class="tags-container" *ngIf="getPdfTags(pdf).length > 0">
+          <mat-chip-set>
+            <mat-chip *ngFor="let tag of getPdfTags(pdf)">
+              <mat-icon matChipAvatar>label</mat-icon>
+              {{ tag }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <div class="no-tags" *ngIf="getPdfTags(pdf).length === 0">
+          <mat-icon>label_off</mat-icon>
+          <span>Brak tagów</span>
+        </div>
+
+        <!-- Status info -->
+        <div class="status-info">
+          <div *ngIf="pdf.status === 'pending'" class="info-message pending">
+            <mat-icon>info</mat-icon>
+            Dokument oczekuje na akceptację administratora
+          </div>
+          <div *ngIf="pdf.status === 'approved'" class="info-message approved">
+            <mat-icon>check_circle</mat-icon>
+            Dokument jest publicznie dostępny
+          </div>
+          <div *ngIf="pdf.status === 'rejected'" class="info-message rejected">
+            <mat-icon>cancel</mat-icon>
+            Dokument został odrzucony przez administratora
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <!-- Pobierz -->
+        <button
+          mat-button
+          color="primary"
+          (click)="downloadPdf(pdf)"
+          matTooltip="Pobierz PDF"
+        >
+          <mat-icon>download</mat-icon>
+          Pobierz
+        </button>
+
+        <!-- Usuń (tylko dla pending i rejected) -->
+        <button
+          *ngIf="canDelete(pdf)"
+          mat-button
+          color="warn"
+          (click)="deleteFile(pdf)"
+          matTooltip="Usuń dokument"
+        >
+          <mat-icon>delete</mat-icon>
+          Usuń
+        </button>
+
+        <!-- Info (dla approved - nie można usunąć) -->
+        <span *ngIf="pdf.status === 'approved'" class="cannot-delete-info">
+          <mat-icon matTooltip="Zatwierdzonych dokumentów nie można usunąć">lock</mat-icon>
+        </span>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!isLoading && pdfs.length === 0" class="empty-state">
+    <mat-icon class="empty-icon">cloud_off</mat-icon>
+    <h2>Nie przesłałeś jeszcze żadnych dokumentów</h2>
+    <p>Zacznij od przesłania swojego pierwszego pliku PDF</p>
+    <button mat-raised-button color="primary" routerLink="/upload">
+      <mat-icon>cloud_upload</mat-icon>
+      Wgraj pierwszy dokument
+    </button>
+  </div>
+</div>

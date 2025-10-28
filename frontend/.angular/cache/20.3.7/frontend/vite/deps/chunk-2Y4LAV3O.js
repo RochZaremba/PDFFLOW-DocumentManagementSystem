@@ -1,12 +1,12 @@
 import {
+  _animationsDisabled
+} from "./chunk-WZCWVHH3.js";
+import {
   coerceBooleanProperty
 } from "./chunk-46HAYV32.js";
 import {
-  _animationsDisabled
-} from "./chunk-J3T7CZGG.js";
-import {
   _IdGenerator
-} from "./chunk-D5NHP3HL.js";
+} from "./chunk-EWUAMZLJ.js";
 import {
   Directionality
 } from "./chunk-WP4JWSZM.js";
@@ -1652,4 +1652,4 @@ export {
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
   MatFormField
 };
-//# sourceMappingURL=chunk-TCHP5UGX.js.map
+//# sourceMappingURL=chunk-2Y4LAV3O.js.map
