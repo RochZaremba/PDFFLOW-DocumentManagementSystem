@@ -1,0 +1,102 @@
+<h2 mat-dialog-title>
+  <mat-icon>label</mat-icon>
+  Zarządzaj tagami
+</h2>
+
+<mat-dialog-content>
+  <div class="dialog-content">
+    <!-- Informacje o PDF -->
+    <div class="pdf-info">
+      <mat-icon class="pdf-icon">picture_as_pdf</mat-icon>
+      <div>
+        <strong>{{ data.pdf.title }}</strong>
+        <p class="pdf-meta">ID: {{ data.pdf.id }}</p>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="loading">
+      <mat-spinner diameter="30"></mat-spinner>
+      <span>Ładowanie tagów...</span>
+    </div>
+
+    <div *ngIf="!isLoading">
+      <!-- Aktualne tagi -->
+      <div class="section">
+        <h3>Przypisane tagi ({{ currentTags.length }})</h3>
+        <mat-chip-set *ngIf="currentTags.length > 0">
+          <mat-chip *ngFor="let tag of currentTags" [removable]="true" (removed)="removeTag(tag)">
+            {{ tag }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-set>
+        <p *ngIf="currentTags.length === 0" class="no-tags">
+          <mat-icon>label_off</mat-icon>
+          Brak przypisanych tagów
+        </p>
+      </div>
+
+      <!-- Dodaj nowy tag -->
+      <div class="section">
+        <h3>Dodaj nowy tag</h3>
+        <form [formGroup]="tagForm" (ngSubmit)="addTag(tagForm.get('newTag')?.value)">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nazwa tagu</mat-label>
+            <input
+              matInput
+              formControlName="newTag"
+              placeholder="np. faktura, pilne, 2024..."
+              (keyup.enter)="addTag(tagForm.get('newTag')?.value)"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="addTag(tagForm.get('newTag')?.value)"
+              [disabled]="!tagForm.get('newTag')?.value"
+            >
+              <mat-icon>add_circle</mat-icon>
+            </button>
+            <mat-error *ngIf="tagForm.get('newTag')?.hasError('minlength')">
+              Min. 2 znaki
+            </mat-error>
+            <mat-error *ngIf="tagForm.get('newTag')?.hasError('maxlength')">
+              Max. 50 znaków
+            </mat-error>
+          </mat-form-field>
+        </form>
+      </div>
+
+      <!-- Wybierz z istniejących -->
+      <div class="section" *ngIf="getAvailableTags().length > 0">
+        <h3>Lub wybierz z istniejących</h3>
+        <div class="existing-tags">
+          <button
+            mat-stroked-button
+            *ngFor="let tag of getAvailableTags()"
+            (click)="addExistingTag(tag)"
+            class="tag-suggestion"
+          >
+            <mat-icon>add</mat-icon>
+            {{ tag.name }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()" [disabled]="isSaving">
+    Anuluj
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="save()"
+    [disabled]="isSaving || isLoading"
+  >
+    <mat-spinner *ngIf="isSaving" diameter="20" class="button-spinner"></mat-spinner>
+    <span *ngIf="!isSaving">Zapisz</span>
+  </button>
+</mat-dialog-actions>

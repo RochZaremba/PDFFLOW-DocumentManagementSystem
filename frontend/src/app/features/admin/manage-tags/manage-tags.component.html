@@ -1,0 +1,100 @@
+<div class="tags-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>
+      <mat-icon class="header-icon">label</mat-icon>
+      Zarządzanie tagami
+    </h1>
+    <p class="subtitle">Przypisuj i edytuj tagi dla wszystkich dokumentów</p>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Ładowanie dokumentów...</p>
+  </div>
+
+  <!-- Tabela -->
+  <mat-card *ngIf="!isLoading && pdfs.length > 0" class="table-card">
+    <div class="table-header">
+      <h2>
+        <mat-icon>list</mat-icon>
+        Dokumenty ({{ pdfs.length }})
+      </h2>
+      <button mat-raised-button color="primary" (click)="loadAllPdfs()">
+        <mat-icon>refresh</mat-icon>
+        Odśwież
+      </button>
+    </div>
+
+    <div class="table-container">
+      <table mat-table [dataSource]="pdfs" class="pdf-table">
+        <!-- Kolumna: Tytuł -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Dokument</th>
+          <td mat-cell *matCellDef="let pdf">
+            <div class="title-cell">
+              <mat-icon class="pdf-icon">picture_as_pdf</mat-icon>
+              <strong>{{ pdf.title }}</strong>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Kolumna: Status -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let pdf">
+            <mat-chip [color]="getStatusColor(pdf.status)">
+              {{ getStatusLabel(pdf.status) }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Kolumna: Tagi -->
+        <ng-container matColumnDef="tags">
+          <th mat-header-cell *matHeaderCellDef>Tagi</th>
+          <td mat-cell *matCellDef="let pdf">
+            <div class="tags-cell">
+              <mat-chip-set *ngIf="getPdfTags(pdf).length > 0">
+                <mat-chip *ngFor="let tag of getPdfTags(pdf)">
+                  <mat-icon matChipAvatar>label</mat-icon>
+                  {{ tag }}
+                </mat-chip>
+              </mat-chip-set>
+              <span *ngIf="getPdfTags(pdf).length === 0" class="no-tags-text">
+                <mat-icon>label_off</mat-icon>
+                Brak tagów
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Kolumna: Akcje -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Akcje</th>
+          <td mat-cell *matCellDef="let pdf">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="openTagDialog(pdf)"
+            >
+              <mat-icon>edit</mat-icon>
+              Zarządzaj tagami
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Wiersze -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </mat-card>
+
+  <!-- Empty state -->
+  <div *ngIf="!isLoading && pdfs.length === 0" class="empty-state">
+    <mat-icon class="empty-icon">inbox</mat-icon>
+    <h2>Brak dokumentów</h2>
+    <p>Nie znaleziono żadnych dokumentów w systemie.</p>
+  </div>
+</div>

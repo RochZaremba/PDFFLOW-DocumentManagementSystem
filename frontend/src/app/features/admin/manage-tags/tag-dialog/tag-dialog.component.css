@@ -1,0 +1,139 @@
+h2[mat-dialog-title] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 20px 24px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+mat-dialog-content {
+  min-width: 500px;
+  max-height: 600px;
+}
+
+.dialog-content {
+  padding: 20px 0;
+}
+
+/* PDF Info */
+.pdf-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.pdf-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #f44336;
+}
+
+.pdf-info strong {
+  font-size: 16px;
+  color: #333;
+}
+
+.pdf-meta {
+  font-size: 12px;
+  color: #999;
+  margin: 4px 0 0 0;
+  font-family: monospace;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  justify-content: center;
+  color: #666;
+}
+
+/* Sections */
+.section {
+  margin-bottom: 24px;
+}
+
+.section h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Current tags */
+mat-chip-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.no-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #999;
+  font-size: 14px;
+  padding: 12px;
+  background-color: #fafafa;
+  border-radius: 4px;
+}
+
+.no-tags mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* Form */
+.full-width {
+  width: 100%;
+}
+
+/* Existing tags */
+.existing-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-suggestion {
+  height: 32px;
+  font-size: 13px;
+}
+
+.tag-suggestion mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  margin-right: 4px;
+}
+
+/* Actions */
+mat-dialog-actions {
+  padding: 16px 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.button-spinner {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  mat-dialog-content {
+    min-width: auto;
+    width: 90vw;
+  }
+}
