@@ -32,7 +32,7 @@ export class PdfUploadComponent implements OnInit {
   private pdfService = inject(PdfService);
   private router = inject(Router);
   private toastr = inject(ToastrService);
-
+  public uploadSuccess: boolean = false;
   uploadForm!: FormGroup;
   selectedFile: File | null = null;
   isUploading = false;
@@ -112,10 +112,17 @@ export class PdfUploadComponent implements OnInit {
 
     this.pdfService.uploadPdf(title, this.selectedFile).subscribe({
       next: (response) => {
+        this.uploadSuccess = true;
         this.toastr.success(
           'Plik został przesłany i czeka na akceptację przez administratora',
           'Upload zakończony!'
         );
+      setTimeout(() => {
+        this.uploadForm.reset();
+        this.clearFile();
+        this.uploadSuccess = false;
+        this.isUploading = false;
+      }, 1500);
 
         // Reset formularza
         this.uploadForm.reset();

@@ -14,6 +14,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { PdfService } from '../../../core/services/pdf.service';
 import { TagService } from '../../../core/services/tag.service';
 import { PdfFile, Tag } from '../../../core/models';
+import { MatRippleModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-pdf-list',
@@ -24,6 +25,7 @@ import { PdfFile, Tag } from '../../../core/models';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    MatRippleModule,
     MatButtonModule,
     MatChipsModule,
     MatIconModule,
@@ -42,7 +44,6 @@ export class PdfListComponent implements OnInit {
   pdfs: PdfFile[] = [];
   allTags: Tag[] = [];
   isLoading = false;
-
   // Paginacja
   totalPdfs = 0;
   pageSize = 10;

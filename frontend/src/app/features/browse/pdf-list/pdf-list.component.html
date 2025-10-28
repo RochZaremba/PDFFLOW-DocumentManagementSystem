@@ -70,7 +70,12 @@
   </div>
   <!-- Lista PDF-ów -->
   <div *ngIf="!isLoading && pdfs.length > 0" class="pdf-grid">
-    <mat-card *ngFor="let pdf of pdfs" class="pdf-card">
+    <mat-card
+      *ngFor="let pdf of pdfs"
+      class="pdf-card"
+      matRipple
+      [matRippleColor]="'rgba(63, 81, 181, 0.1)'"
+    >
       <mat-card-header>
         <mat-icon mat-card-avatar class="pdf-icon">picture_as_pdf</mat-icon>
         <mat-card-title>{{ pdf.title }}</mat-card-title>

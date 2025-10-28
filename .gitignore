@@ -1,40 +1,70 @@
 # ----------------------------------------------------------------------
-# GLOBALNE
+# ZALEŻNOŚCI I INSTALACJA
 # ----------------------------------------------------------------------
-.DS_Store
+# Główny folder z zależnościami Node.js
+/node_modules
+# Wszelkie foldery node_modules w podkatalogach
+**/node_modules
+
+# Pliki blokujące menedżerów pakietów (niepotrzebne, jeśli używasz package-lock.json/yarn.lock/pnpm-lock.yaml)
+# /package-lock.json
+# /yarn.lock
+# /pnpm-lock.yaml
+
+# ----------------------------------------------------------------------
+# KOMPILACJA I GENEROWANIE KODU
+# ----------------------------------------------------------------------
+# Skompilowane pliki (NestJS i Angular)
+/dist
+**/dist
+/build
+**/build
+
+# Angular / Vite Cache
+# Folder .angular w głównym katalogu lub podkatalogach
+.angular
+/.angular
+**/.angular
+
+# ----------------------------------------------------------------------
+# ŚRODOWISKO I KONFIGURACJA LOKALNA
+# ----------------------------------------------------------------------
+# Wrażliwe dane / zmienne środowiskowe
 .env
 .env.*
-.vscode/
-npm-debug.log
-yarn-error.log
-pnpm-debug.log
-node_modules
-dist
-coverage
-
-# ----------------------------------------------------------------------
-# FRONTEND (Angular / Universal)
-# ----------------------------------------------------------------------
-# Wzory dla folderu dist (lub build) w podkatalogach, np. frontend/dist
-**/dist/
-**/build/
-**/coverage/
-
-# Foldery tymczasowe Angular
-.angular/cache
-.angular/
-.idea/
-
-# Pliki konfiguracyjne specyficzne dla dewelopera
-src/environments/*.ts.local
-
-# ----------------------------------------------------------------------
-# BACKEND (NestJS)
-# ----------------------------------------------------------------------
-# Główny folder wyjściowy w NestJS
-/dist
-/node_modules
-
-# Lokalne pliki konfiguracyjne
+.env.local
+.env.development
+.env.production
 src/**/*.json.local
-.eslintcache
+
+# Ustawienia IDE/Editora
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+# ----------------------------------------------------------------------
+# TESTY, LOGI I RAPORTY
+# ----------------------------------------------------------------------
+# Raporty z pokrycia kodu (coverage)
+/coverage
+**/coverage
+
+# Pliki logów
+*.log
+*-debug.log*
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Pliki zrzutów pamięci
+*.dump
+*.dmp
+
+# ----------------------------------------------------------------------
+# SYSTEM I INNE
+# ----------------------------------------------------------------------
+# Mac OS X
+.DS_Store
+# Windows Thumbs
+Thumbs.db

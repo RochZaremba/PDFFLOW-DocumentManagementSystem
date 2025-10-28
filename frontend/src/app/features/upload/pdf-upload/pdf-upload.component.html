@@ -91,6 +91,12 @@
         mode="indeterminate"
         color="primary"
       ></mat-progress-bar>
+      <!-- Success Animation-->
+      <div *ngIf="uploadSuccess" class="success-message">
+        <mat-icon class="success-icon">check_circle</mat-icon>
+        <h3>Sukces!</h3>
+        <p>Twój dokument został przesłany</p>
+      </div>
 
       <!-- Przycisk submit -->
       <div class="actions">
