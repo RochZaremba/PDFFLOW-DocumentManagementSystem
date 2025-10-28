@@ -1,0 +1,40 @@
+# ----------------------------------------------------------------------
+# GLOBALNE
+# ----------------------------------------------------------------------
+.DS_Store
+.env
+.env.*
+.vscode/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+node_modules
+dist
+coverage
+
+# ----------------------------------------------------------------------
+# FRONTEND (Angular / Universal)
+# ----------------------------------------------------------------------
+# Wzory dla folderu dist (lub build) w podkatalogach, np. frontend/dist
+**/dist/
+**/build/
+**/coverage/
+
+# Foldery tymczasowe Angular
+.angular/cache
+.angular/
+.idea/
+
+# Pliki konfiguracyjne specyficzne dla dewelopera
+src/environments/*.ts.local
+
+# ----------------------------------------------------------------------
+# BACKEND (NestJS)
+# ----------------------------------------------------------------------
+# Główny folder wyjściowy w NestJS
+/dist
+/node_modules
+
+# Lokalne pliki konfiguracyjne
+src/**/*.json.local
+.eslintcache
