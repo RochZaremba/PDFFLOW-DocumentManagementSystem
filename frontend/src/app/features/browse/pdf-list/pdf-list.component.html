@@ -49,12 +49,25 @@
     </form>
   </mat-card>
 
-  <!-- Loading spinner -->
-  <div *ngIf="isLoading" class="loading-container">
-    <mat-spinner diameter="50"></mat-spinner>
-    <p>Ładowanie dokumentów...</p>
+  <!-- Loading skeletons -->
+  <div *ngIf="isLoading" class="skeleton-container">
+    <div class="skeleton-grid">
+      <mat-card *ngFor="let item of [1,2,3,4,5,6]" class="skeleton-card-wrapper">
+        <mat-card-header>
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-content">
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton skeleton-text" style="width: 60%;"></div>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text" style="width: 80%;"></div>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
-
   <!-- Lista PDF-ów -->
   <div *ngIf="!isLoading && pdfs.length > 0" class="pdf-grid">
     <mat-card *ngFor="let pdf of pdfs" class="pdf-card">

@@ -1,3 +1,66 @@
+/* Animacje kontenerów */
+.upload-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.header {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.upload-card {
+  animation: slideInRight 0.6s ease-out;
+}
+
+.info-card {
+  animation: fadeIn 0.8s ease-out;
+  animation-delay: 0.3s;
+  animation-fill-mode: both;
+}
+
+/* Animacja dla drop zone */
+.file-drop-zone {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.file-drop-zone:hover {
+  border-color: #3f51b5;
+  background-color: #f0f4ff;
+  transform: scale(1.01);
+}
+
+.file-drop-zone.has-file {
+  animation: pulse 0.6s ease-out;
+}
+
+/* Animacja dla przycisku */
+.submit-button {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.submit-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.submit-button:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(63, 81, 181, 0.4);
+}
 .upload-container {
   max-width: 800px;
   margin: 0 auto;
